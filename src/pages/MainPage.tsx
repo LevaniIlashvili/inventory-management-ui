@@ -46,7 +46,7 @@ export default function MainPage() {
     <div className="container mt-4">
       <div className="row mb-4">
         <div className="col">
-          <h2>Welcome to MyApp</h2>
+          <h2>Welcome to Inventory Management</h2>
           <p className="text-muted">
             Explore the latest and most popular public inventories.
           </p>

@@ -15,7 +15,7 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-2 mb-4">
       <div className="container">
         <Link className="navbar-brand fw-bold text-primary" to="/">
-          InventoryApp
+          InventoryManagement
         </Link>
 
         <button
