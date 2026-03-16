@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import SocialLoginButtons from "./SocialLoginButtons";
 
 type LoginFormValues = {
   username: string;
@@ -33,7 +34,7 @@ export default function LoginForm() {
       navigate("/dashboard", { replace: true });
     } catch (err: any) {
       console.log(err);
-      setError("password", { message: err?.message || "Login failed" });
+      setError("password", { message: err.data?.message || "Login failed" });
     }
   };
 
@@ -76,6 +77,8 @@ export default function LoginForm() {
         >
           {isSubmitting ? "Logging in..." : "Login"}
         </button>
+
+        <SocialLoginButtons />
       </form>
     </div>
   );

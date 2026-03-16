@@ -3,6 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { register } from "../services/authService";
 import useErrorHandler from "../hooks/useErrorHandler";
+import { useNavigate } from "react-router-dom";
+import SocialLoginButtons from "./SocialLoginButtons";
 
 type RegisterFormData = {
   firstName: string;
@@ -15,6 +17,7 @@ type RegisterFormData = {
 
 export default function RegisterForm() {
   const { error, handleError, clearError } = useErrorHandler();
+  const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
@@ -25,7 +28,8 @@ export default function RegisterForm() {
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
       .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+      .min(6, "Password must be at least 6 characters")
+      .matches(/[A-Z]/, "Password must contain at least one uppercase letter"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm password is required"),
@@ -44,7 +48,7 @@ export default function RegisterForm() {
     clearError();
     try {
       await register(data);
-      alert("Registered successfully!");
+      navigate("/login", { replace: true });
       reset();
     } catch (err: any) {
       handleError(err);
@@ -61,7 +65,6 @@ export default function RegisterForm() {
 
         {error && <div className="alert alert-danger">{error}</div>}
 
-        {/* First Name */}
         <div className="mb-3">
           <label className="form-label">First Name</label>
           <input
@@ -72,7 +75,6 @@ export default function RegisterForm() {
           <div className="invalid-feedback">{errors.firstName?.message}</div>
         </div>
 
-        {/* Last Name */}
         <div className="mb-3">
           <label className="form-label">Last Name</label>
           <input
@@ -83,7 +85,6 @@ export default function RegisterForm() {
           <div className="invalid-feedback">{errors.lastName?.message}</div>
         </div>
 
-        {/* Username */}
         <div className="mb-3">
           <label className="form-label">Username</label>
           <input
@@ -94,7 +95,6 @@ export default function RegisterForm() {
           <div className="invalid-feedback">{errors.username?.message}</div>
         </div>
 
-        {/* Email */}
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
@@ -105,7 +105,6 @@ export default function RegisterForm() {
           <div className="invalid-feedback">{errors.email?.message}</div>
         </div>
 
-        {/* Password */}
         <div className="mb-3">
           <label className="form-label">Password</label>
           <input
@@ -116,7 +115,6 @@ export default function RegisterForm() {
           <div className="invalid-feedback">{errors.password?.message}</div>
         </div>
 
-        {/* Confirm Password */}
         <div className="mb-3">
           <label className="form-label">Confirm Password</label>
           <input
@@ -134,6 +132,8 @@ export default function RegisterForm() {
         <button type="submit" className="btn btn-primary w-100">
           Register
         </button>
+
+        <SocialLoginButtons />
       </form>
     </div>
   );

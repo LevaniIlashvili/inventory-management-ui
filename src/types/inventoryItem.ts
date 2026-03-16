@@ -1,5 +1,5 @@
 export interface CustomFieldValue {
-  fieldId: string;
+  inventoryCustomFieldId: string;
   value: string;
 }
 

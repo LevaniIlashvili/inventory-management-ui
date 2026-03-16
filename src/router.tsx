@@ -6,6 +6,9 @@ import UserPage from "./pages/UserPage";
 import InventoryPage from "./pages/InventoryPage";
 import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MainPage from "./pages/MainPage";
+import OAuthCallbackPage from "./pages/OAuthCallbackPage";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 export default function Router() {
   return (
@@ -14,9 +17,11 @@ export default function Router() {
 
       <div className="container mt-4">
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<MainPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
 
           <Route
             path="/dashboard"
@@ -27,23 +32,18 @@ export default function Router() {
             }
           />
 
-          <Route
-            path="/inventories/:id"
-            element={
-              <ProtectedRoute>
-                <InventoryPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/inventories/:inventoryId" element={<InventoryPage />} />
 
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requireAdmin={true}>
                 <AdminPage />
               </ProtectedRoute>
             }
           />
+
+          <Route path="/search" element={<SearchResultsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

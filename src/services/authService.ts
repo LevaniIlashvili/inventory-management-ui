@@ -5,6 +5,8 @@ import {
   type AuthResponse,
 } from "../types/auth";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const login = async (data: LoginRequest): Promise<AuthResponse> => {
   const res = await api.post("/auth/login", data);
   return res.data;
@@ -18,9 +20,9 @@ export const register = async (
 };
 
 export const googleLogin = () => {
-  window.location.href = "https://localhost:7117/api/auth/google";
+  window.location.href = `${API_URL}/api/auth/google`;
 };
 
 export const facebookLogin = () => {
-  window.location.href = "https://localhost:7117/api/auth/facebook";
+  window.location.href = `${API_URL}/api/auth/facebook`;
 };

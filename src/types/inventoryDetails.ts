@@ -8,6 +8,7 @@ export interface InventoryDetails {
   isPublic: boolean;
   tags: InventoryTag[];
   customFields: InventoryCustomField[];
+  customIdElements: CustomIdElement[];
 }
 
 export interface InventoryTag {
@@ -17,6 +18,17 @@ export interface InventoryTag {
 
 export interface InventoryCustomField {
   id: string;
-  name: string;
+  title: string;
+  description: string;
   type: string;
+  shouldBeDisplayed: boolean;
+  order: number;
+}
+
+export interface CustomIdElement {
+  id: string;
+  order: number;
+  type: string;
+  format?: string;
+  fixedText?: string;
 }
