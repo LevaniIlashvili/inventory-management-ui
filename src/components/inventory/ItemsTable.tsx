@@ -19,7 +19,9 @@ export default function ItemsTable({
 }: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const displayFields = customFields.filter((f) => f.shouldBeDisplayed);
+  const displayFields = customFields
+    .filter((f) => f.shouldBeDisplayed)
+    .sort((a, b) => a.order - b.order);
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) =>
