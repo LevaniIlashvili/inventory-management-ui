@@ -15,6 +15,7 @@ import CustomFieldsTab from "../components/inventory/CustomFieldsTab";
 import EditItemModal from "../components/inventory/EditItemModal";
 import StatisticsTab from "../components/inventory/StatisticsTab";
 import { useAuth } from "../context/AuthContext";
+import AccessSettingsTab from "../components/inventory/AccessSettingsTab";
 
 export default function InventoryPage() {
   const params = useParams();
@@ -103,8 +104,11 @@ export default function InventoryPage() {
 
   const canManageInventory = isCreator || isAdmin;
 
-  const hasWriteAccess = !!user && (canManageInventory || inventory.isPublic);
-  // inventory.accessList?.some((a: any) => a.userId === user?.id);
+  const hasWriteAccess =
+    !!user &&
+    (canManageInventory ||
+      inventory.isPublic ||
+      inventory.accessList?.some((a: any) => a.userId === user?.id));
 
   return (
     <div className="container mt-4">
@@ -212,12 +216,7 @@ export default function InventoryPage() {
         )}
 
         {canManageInventory && activeTab === "access" && (
-          <div>
-            <h4>Access Management</h4>
-            <div className="alert alert-secondary">
-              User search autocomplete and permissions table goes here.
-            </div>
-          </div>
+          <AccessSettingsTab inventory={inventory} onUpdateSuccess={loadData} />
         )}
 
         {canManageInventory && activeTab === "stats" && (

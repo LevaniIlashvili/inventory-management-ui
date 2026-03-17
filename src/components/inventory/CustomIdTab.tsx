@@ -28,6 +28,11 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
   const [deletedIds, setDeletedIds] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "danger";
+  } | null>(null);
+
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   useEffect(() => {
@@ -63,6 +68,7 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
   };
 
   const handleAddElement = (type: string) => {
+    setNotification(null);
     const newElement: CustomIdElement = {
       type,
       order: elements.length,
@@ -73,6 +79,7 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
   };
 
   const handleRemoveElement = (index: number) => {
+    setNotification(null);
     const el = elements[index];
     if (el.id) {
       setDeletedIds([...deletedIds, el.id]);
@@ -86,6 +93,7 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
     field: keyof CustomIdElement,
     value: any,
   ) => {
+    setNotification(null);
     const updated = [...elements];
     updated[index] = { ...updated[index], [field]: value };
     setElements(updated);
@@ -116,6 +124,7 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
   const handleSave = async () => {
     try {
       setIsSaving(true);
+      setNotification(null);
 
       if (deletedIds.length > 0) {
         await deleteCustomIdElements(inventory.id, deletedIds);
@@ -138,10 +147,18 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
 
       setDeletedIds([]);
       onUpdateSuccess();
-      alert("Custom ID Format saved successfully!");
+
+      setNotification({
+        message: "Custom ID Format saved successfully!",
+        type: "success",
+      });
     } catch (error) {
       console.error("Failed to save custom ID elements", error);
-      alert("Failed to save changes.");
+
+      setNotification({
+        message: "Failed to save changes. Please try again.",
+        type: "danger",
+      });
     } finally {
       setIsSaving(false);
     }
@@ -160,6 +177,21 @@ export default function CustomIdTab({ inventory, onUpdateSuccess }: Props) {
             {isSaving ? "Saving..." : "Save Changes"}
           </button>
         </div>
+
+        {notification && (
+          <div
+            className={`alert alert-${notification.type} alert-dismissible fade show`}
+            role="alert"
+          >
+            {notification.message}
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setNotification(null)}
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
 
         <div className="alert alert-dark text-center fs-4 font-monospace mb-4">
           {generatePreview()}

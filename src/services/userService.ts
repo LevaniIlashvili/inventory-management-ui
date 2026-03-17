@@ -1,6 +1,14 @@
+import type { User } from "../types/user";
 import { api } from "./api";
 
 const API = "/user";
+
+export const searchUsers = async (query: string): Promise<User[]> => {
+  const response = await api.get(
+    `${API}/search?q=${encodeURIComponent(query)}`,
+  );
+  return response.data;
+};
 
 export const getUsers = async () => {
   const res = await api.get(API);

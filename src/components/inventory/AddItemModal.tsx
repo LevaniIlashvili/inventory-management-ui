@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { addItem } from "../../services/inventoryItemService";
 import type { InventoryCustomField } from "../../types/inventoryDetails";
@@ -15,6 +16,8 @@ export default function AddItemModal({
   onClose,
   onSuccess,
 }: Props) {
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -22,6 +25,8 @@ export default function AddItemModal({
   } = useForm();
 
   const submitHandler = async (data: any) => {
+    setErrorMsg(null);
+
     try {
       const customFieldValues = customFields.map((field) => {
         const rawValue = data[field.id];
@@ -46,7 +51,9 @@ export default function AddItemModal({
       onSuccess();
     } catch (error) {
       console.error("Error adding item:", error);
-      alert("Failed to add item. Check console for details.");
+      setErrorMsg(
+        "Failed to save the item. Please check your connection or try again.",
+      );
     }
   };
 
@@ -111,10 +118,20 @@ export default function AddItemModal({
 
           <form onSubmit={handleSubmit(submitHandler)}>
             <div className="modal-body">
+              {/* Renders the error notification if the API fails */}
+              {errorMsg && (
+                <div className="alert alert-danger py-2 mb-3" role="alert">
+                  {errorMsg}
+                </div>
+              )}
+
               {customFields.map((field) => (
                 <div className="mb-3" key={field.id}>
                   {!field.type.toLowerCase().includes("boolean") && (
-                    <label htmlFor={field.id} className="form-label">
+                    <label
+                      htmlFor={field.id}
+                      className="form-label fw-semibold"
+                    >
                       {field.title}
                     </label>
                   )}
@@ -128,6 +145,7 @@ export default function AddItemModal({
                 </div>
               )}
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"

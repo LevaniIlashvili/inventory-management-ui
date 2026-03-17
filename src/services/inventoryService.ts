@@ -66,3 +66,25 @@ export const getInventoriesByTag = async (
   );
   return res.data;
 };
+
+export const addUserToAccessList = async (
+  inventoryId: string,
+  userIdBeingAdded: string,
+): Promise<void> => {
+  await api.put(
+    `/inventory/${inventoryId}/access-list`,
+    JSON.stringify(userIdBeingAdded),
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+};
+
+export const removeUserFromAccessList = async (
+  inventoryId: string,
+  userId: string,
+): Promise<void> => {
+  await api.delete(`/inventory/${inventoryId}/access-list/${userId}`);
+};

@@ -9,6 +9,7 @@ export interface InventoryDetails {
   tags: InventoryTag[];
   customFields: InventoryCustomField[];
   customIdElements: CustomIdElement[];
+  accessList: string[];
 }
 
 export interface InventoryTag {
