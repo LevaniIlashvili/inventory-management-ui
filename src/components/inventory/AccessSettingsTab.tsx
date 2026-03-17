@@ -70,12 +70,6 @@ export default function AccessSettingsTab({
   };
 
   const handleRemoveUser = async (userId: string) => {
-    if (
-      !window.confirm("Are you sure you want to remove this user's access?")
-    ) {
-      return;
-    }
-
     try {
       setRemovingUserId(userId);
       setErrorMsg(null);
