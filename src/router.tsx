@@ -9,43 +9,52 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import MainPage from "./pages/MainPage";
 import OAuthCallbackPage from "./pages/OAuthCallbackPage";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import SupportWidget from "./components/SupportWidget";
+import { SupportProvider } from "./context/SupportContext";
 
 export default function Router() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <SupportProvider>
+      <BrowserRouter>
+        <Navbar />
 
-      <div className="container mt-4">
-        <Routes>
-          <Route path="/" element={<MainPage />} />
+        <div className="container mt-4">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/oauth-callback" element={<OAuthCallbackPage />} />
 
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <UserPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <UserPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="/inventories/:inventoryId" element={<InventoryPage />} />
+            <Route
+              path="/inventories/:inventoryId"
+              element={<InventoryPage />}
+            />
 
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute requireAdmin={true}>
-                <AdminPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="/search" element={<SearchResultsPage />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+            <Route path="/search" element={<SearchResultsPage />} />
+          </Routes>
+        </div>
+
+        <SupportWidget />
+      </BrowserRouter>
+    </SupportProvider>
   );
 }

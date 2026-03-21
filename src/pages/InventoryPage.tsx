@@ -16,6 +16,7 @@ import EditItemModal from "../components/inventory/EditItemModal";
 import StatisticsTab from "../components/inventory/StatisticsTab";
 import { useAuth } from "../context/AuthContext";
 import AccessSettingsTab from "../components/inventory/AccessSettingsTab";
+import { useSupportContext } from "../context/SupportContext";
 
 export default function InventoryPage() {
   const params = useParams();
@@ -32,6 +33,8 @@ export default function InventoryPage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+
+  const { setCurrentInventoryTitle } = useSupportContext();
 
   const loadData = async () => {
     if (!inventoryId) {
@@ -57,6 +60,14 @@ export default function InventoryPage() {
   useEffect(() => {
     loadData();
   }, [inventoryId]);
+
+  useEffect(() => {
+    if (inventory?.title) {
+      setCurrentInventoryTitle(inventory.title);
+    }
+
+    return () => setCurrentInventoryTitle(undefined);
+  }, [inventory?.title, setCurrentInventoryTitle]);
 
   const handleDeleteItem = async (ids: string[]) => {
     try {
