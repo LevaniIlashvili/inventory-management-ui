@@ -8,11 +8,13 @@ import {
 } from "../services/inventoryService";
 import InventoryTable from "../components/inventory/InventoryTable";
 import InventoryFormModal from "../components/inventory/InventoryFormModal";
+import CrmFormModal from "../components/crm/CrmFormModal";
 
 export default function UserPage() {
   const [inventories, setInventories] = useState<Inventory[]>([]);
 
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isCrmOpen, setIsCrmOpen] = useState(false);
   const [editing, setEditing] = useState<Inventory | null>(null);
 
   const loadInventories = async () => {
@@ -47,9 +49,21 @@ export default function UserPage() {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Your Inventories</h2>
-        <button className="btn btn-success" onClick={() => setIsAddOpen(true)}>
-          + Create Inventory
-        </button>
+
+        <div>
+          <button
+            className="btn btn-outline-primary me-2"
+            onClick={() => setIsCrmOpen(true)}
+          >
+            Complete Profile (CRM)
+          </button>
+          <button
+            className="btn btn-success"
+            onClick={() => setIsAddOpen(true)}
+          >
+            + Create Inventory
+          </button>
+        </div>
       </div>
 
       <InventoryTable
@@ -72,6 +86,8 @@ export default function UserPage() {
           onClose={() => setEditing(null)}
         />
       )}
+
+      {isCrmOpen && <CrmFormModal onClose={() => setIsCrmOpen(false)} />}
     </div>
   );
 }
